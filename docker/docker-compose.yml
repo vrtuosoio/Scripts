@@ -1,0 +1,144 @@
+version: '2.1'
+
+services:
+  nginx-proxy:
+    build:
+      context:  ./nginx-proxy
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - api-service
+      - portal-ui-service
+      - studio-service
+      - socket-server-service
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+  api-service:
+    image: quay.io/vrtuoso/api:${COMMIT_ID}
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    environment:
+      DB_NAME: vrtuoso
+      DB_USERNAME: vrtuoso
+      DB_PORT: 3306
+      DB_PASSWORD: vrtuoso
+      DB_HOST: mysql
+      DB_SSL: disable
+      S3_BUCKET: s3_bucket
+      S3_ENDPOINT: https://nyc3.digitaloceanspaces.com
+      S3_ACCESS_KEY_ID: s3_key_id
+      S3_SECRET_ACCESS_KEY: s3_secret_access_key
+      S3_REGION: nyc3
+      JWT_SECRET_KEY: secret
+      HOST_URL: http://platform-dev.vrtuoso.io
+      SMTP_HOST: smtp.mailgun.org
+      SMTP_PORT: 587
+      SMTP_USERNAME: postmaster@mg.vrtuoso.io
+      SMTP_PASSWORD: smtppassword
+      ENV: prod
+    links:
+      - redis
+      - mysql
+  api-cron-service:
+    image: quay.io/vrtuoso/api:${COMMIT_ID}
+    command: /go/bin/api cron
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    environment:
+      DB_NAME: vrtuoso
+      DB_USERNAME: vrtuoso
+      DB_PORT: 3306
+      DB_PASSWORD: vrtuoso
+      DB_HOST: mysql
+      S3_BUCKET: s3_bucket
+      S3_ENDPOINT: https://nyc3.digitaloceanspaces.com
+      S3_ACCESS_KEY_ID: s3_key_id
+      S3_SECRET_ACCESS_KEY: s3_secret_access_key
+      S3_REGION: nyc3
+      JWT_SECRET_KEY: secret
+      HOST_URL: http://platform-dev.vrtuoso.io
+      DB_SSL: disable
+      SMTP_HOST: smtp.mailgun.org
+      SMTP_PORT: 587
+      SMTP_USERNAME: postmaster@mg.vrtuoso.io
+      SMTP_PASSWORD: smtppassword
+      ENV: prod
+    links:
+      - redis
+      - mysql
+  portal-ui-service:
+    image: quay.io/vrtuoso/portal-ui:${COMMIT_ID}
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    links:
+      - redis
+      - mysql
+  studio-service:
+    image: quay.io/vrtuoso/studio:${COMMIT_ID}
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    environment:
+      DB_NAME: vrtuoso
+      DB_USERNAME: vrtuoso
+      DB_PORT: 3306
+      DB_PASSWORD: vrtuoso
+      DB_HOST: 178.62.51.181
+      JWT_SECRET_KEY: secret
+      DB_SSL: disable
+      SMTP_HOST: smtp.mailgun.org
+      SMTP_PORT: 587
+      SMTP_USERNAME: postmaster@mg.vrtuoso.io
+      SMTP_PASSWORD: smtp_password
+      ENV: production
+      FILE_HOST_URL: ""
+      INSTANCE_MODE: cloud
+      API_URL: http://api-service:8080
+      FFMPEG_PATH: ffmpeg
+    links:
+      - redis
+      - mysql
+  socket-server-service:
+    image: quay.io/vrtuoso/socket-server:${COMMIT_ID}
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    environment:
+      PORT: 7000
+      REDIS_URL: redis://v:vrtuoso@redis:6379
+    links:
+      - redis
+      - mysql
+  redis:
+    image: bitnami/redis:4.0-ol-7
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    environment:
+      REDIS_PASSWORD: vrtuoso
+  mysql:
+    image: mysql:5.6
+    restart: always
+    logging:
+      options:
+        max-size: 50m
+    command: ["--character-set-server=utf8", "--collation-server=utf8_general_ci"]
+    environment:
+      MYSQL_USER: vrtuoso
+      MYSQL_ROOT_PASSWORD: vrtuoso
+      MYSQL_PASSWORD: vrtuoso
+      MYSQL_DATABASE: vrtuoso
+  
