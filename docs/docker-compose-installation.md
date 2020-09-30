@@ -9,6 +9,14 @@
 * redis (tested up to redis 4.x, covered by this installation guide and docker-compose template but can be updated to use externally available set up)
 * mysql 5.6 (covered by this installation guide and docker-compose template but can be updated to use externally available set up)
 
+#### Hardware Requirements
+We recommend running the platform on a clean instance with the following specs
+
+* 4GB RAM
+* 2CPU
+* 100GB Storage
+* port 80 and 443 must be available
+
 ### 1. Download and Install Docker and docker-compose (required)
 
 You must install docker and docker-compose and docker releases publicly available [here](https://docs.docker.com/engine/install/ubuntu/) for `docker` and [here](https://docs.docker.com/compose/install/) for `docker-compose`
