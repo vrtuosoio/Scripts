@@ -1,0 +1,7 @@
+description: VRtuoso is a VR Platform
+engine: gotpl
+maintainers:
+- email: support@vrtuoso.io
+  name: vrtuoso
+name: vrtuoso
+version: beta

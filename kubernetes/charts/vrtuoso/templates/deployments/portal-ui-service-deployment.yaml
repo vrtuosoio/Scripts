@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.vrtuoso.service: portal-ui-service
+  name: portal-ui-service
+  namespace: {{ .Values.namespace | default "vrtuoso" }}
+spec:
+  replicas: {{ .Values.api.replicaCount | default 1 }}
+  strategy: {}
+  selector:
+    matchLabels:
+      io.vrtuoso.service: portal-ui-service
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.vrtuoso.service: portal-ui-service
+    spec:
+      imagePullSecrets:
+        - name: quay-regcred
+      containers:
+      - image: quay.io/vrtuoso/portal-ui:{{ .Values.portalui.image.tag | default .Values.image.tag | default "latest" }}
+        name: portal-ui-service
+        resources: {}
+      restartPolicy: Always
+status: {}

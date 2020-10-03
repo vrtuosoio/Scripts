@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.vrtuoso.service: api-service
+  name: api-service
+  namespace: {{ .Values.namespace | default "vrtuoso" }}
+spec:
+  replicas: {{ .Values.api.replicaCount | default 1 }}
+  strategy: {}
+  selector:
+    matchLabels:
+      io.vrtuoso.service: api-service
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.vrtuoso.service: api-service
+    spec:
+      imagePullSecrets:
+        - name: quay-regcred
+      containers:
+      - env:
+        - name: DB_HOST
+          value: {{ .Values.mysql.host }}
+        - name: DB_NAME
+          value: {{ .Values.mysql.database }}
+        - name: DB_PASSWORD
+          value: {{ .Values.mysql.password }}
+        - name: DB_PORT
+          value: {{ .Values.mysql.port | quote }}
+        - name: DB_SSL
+          value: {{ .Values.mysql.ssl }}
+        - name: DB_USERNAME
+          value: {{ .Values.mysql.username }}
+        - name: ENV
+          value: prod
+        - name: HOST_URL
+          value: {{ .Values.shared.env.HOST_URL }}
+        - name: JWT_SECRET_KEY
+          value: {{ .Values.shared.env.JWT_SECRET_KEY }}
+        - name: S3_ACCESS_KEY_ID
+          value: {{ .Values.api.env.S3_ACCESS_KEY_ID }}
+        - name: S3_SECRET_ACCESS_KEY
+          value: {{ .Values.api.env.S3_SECRET_ACCESS_KEY }}
+        - name: S3_BUCKET
+          value: {{ .Values.api.env.S3_BUCKET }}
+        - name: S3_ENDPOINT
+          value: {{ .Values.api.env.S3_ENDPOINT }}
+        - name: S3_REGION
+          value: {{ .Values.api.env.S3_REGION }}
+        - name: SMTP_HOST
+          value: {{ .Values.api.env.SMTP_HOST }}
+        - name: SMTP_PASSWORD
+          value: {{ .Values.api.env.SMTP_PASSWORD }}
+        - name: SMTP_PORT
+          value: {{ .Values.api.env.SMTP_PORT | quote }}
+        - name: SMTP_USERNAME
+          value: {{ .Values.api.env.SMTP_USERNAME }}
+        image: quay.io/vrtuoso/api:{{ .Values.api.image.tag | default .Values.image.tag | default "latest" }}
+        name: api-service
+        resources: {}
+      restartPolicy: Always
+status: {}

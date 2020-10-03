@@ -1,0 +1,20 @@
+{{- if eq .Values.redis.incluster true }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.vrtuoso.service: redis
+  name: redis
+  namespace: {{ .Values.namespace | default "vrtuoso" }}
+spec:
+  clusterIP: None
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
+  selector:
+    io.vrtuoso.service: redis
+status:
+  loadBalancer: {}
+
+{{- end }}

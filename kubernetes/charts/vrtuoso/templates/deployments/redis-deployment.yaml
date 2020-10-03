@@ -1,0 +1,32 @@
+{{- if eq .Values.redis.incluster true }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.vrtuoso.service: redis
+  name: redis
+  namespace: {{ .Values.namespace | default "vrtuoso" }}
+spec:
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+      io.vrtuoso.service: redis
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.vrtuoso.service: redis
+    spec:
+      imagePullSecrets:
+        - name: quay-regcred
+      containers:
+      - image: bitnami/redis:4.0-ol-7
+        env:
+        - name: REDIS_PASSWORD
+          value: {{ .Values.redis.env.REDIS_PASSWORD }}
+        name: redis
+        resources: {}
+      restartPolicy: Always
+status: {}
+{{- end}}
