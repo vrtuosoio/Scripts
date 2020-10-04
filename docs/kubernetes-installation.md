@@ -31,7 +31,7 @@ Recommended Per VM Spec:
 
 ### 1. Configure values.yml
 
-We use helm chart to configure our kubernetes configurations. However, we do not rely on kubernetes helm installation to manage deployment. It is simply used as a templating tool to faciliate generation of kubernetes config yaml files. Clone this repo
+We use helm chart to configure our kubernetes configurations. However, we do not rely on kubernetes helm installation to manage deployment. It is simply used as a templating tool to facilitate generation of kubernetes config yaml files. Clone this repo
 
 ```
 git clone https://github.com/vrtuosoio/Scripts.git
@@ -151,7 +151,25 @@ registry:
 
 ### 8. Run Deployment Script 
 
+Use `helm` to generate `kubernetes` deployment files
+
 ```
+rm -rf generated
+mkdir -p generated
+helm template \
+  --values ./deploy-values.yaml \
+  --output-dir ./generated \
+    ./charts/vrtuoso
+```
+
+Use `kubectl` to deploy generated config files
+
+```
+kubectl apply -f generated/vrtuoso/templates/migrations;
+kubectl apply -f generated/vrtuoso/templates/secrets;
+kubectl apply -f generated/vrtuoso/templates/deployments;
+kubectl apply -f generated/vrtuoso/templates/svcs;
+kubectl apply -f generated/vrtuoso/templates/ingress/ingress.yaml;
 ```
 
 ### 9. Visit Deployed VRtuoso

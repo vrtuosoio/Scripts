@@ -40,8 +40,8 @@ spec:
         - /nginx-ingress-controller
         - --configmap=$(POD_NAMESPACE)/nginx-configuration
         - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
-        {{- if eq .Values.ingress.tls true}}
-        - --default-ssl-certificate=default/{{ .Values.ingress.secretName | default "vrtuoso.io"}} 
+        {{- if eq .Values.tls.enabled true}}
+        - --default-ssl-certificate=default/{{ .Values.tls.secretName | default "vrtuoso.io"}} 
         {{- end }}
         - --udp-services-configmap=$(POD_NAMESPACE)/udp-services
         - --publish-service=$(POD_NAMESPACE)/ingress-nginx
