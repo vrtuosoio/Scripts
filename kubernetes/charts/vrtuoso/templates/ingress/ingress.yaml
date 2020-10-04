@@ -6,7 +6,8 @@ metadata:
   annotations:
     {{- if eq .Values.ingress.provider "rancher-v1" }}
     io.rancher.scheduler.global: "true"
-    {{- else }}
+    {{- end }}
+    {{- if eq .Values.ingress.nginx true }}
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/proxy-body-size: 99999m
     nginx.ingress.kubernetes.io/affinity: "cookie"
@@ -24,6 +25,9 @@ metadata:
     {{- end }}
     {{- if ne .Values.tls.enabled true }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    {{- end }}
+    {{- range $key, $value := .Values.ingress.annotations }}
+      {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
   {{- if eq .Values.tls.enabled true }}

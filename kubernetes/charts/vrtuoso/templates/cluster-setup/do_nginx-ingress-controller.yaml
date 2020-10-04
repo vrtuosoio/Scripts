@@ -1,3 +1,4 @@
+{{- if eq .Values.ingress.installNginxIngress true }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -110,3 +111,4 @@ status:
   readyReplicas: 1
   replicas: 1
   updatedReplicas: 1
+{{- end }}

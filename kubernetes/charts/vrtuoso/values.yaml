@@ -8,6 +8,8 @@ tls:
   secretKey: ''
 ingress:
   provider: rancher-v1|digitalocean|gke|eks
+  nginx: true
+  annotations: {}
 shared:
   env:
     HOST_URL: https://portal.vrtuoso.io
