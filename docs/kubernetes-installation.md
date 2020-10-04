@@ -53,18 +53,16 @@ The following table lists the configurable parameters of the vrtuoso chart and t
 | -------------------------------  | ----------------------------------------------------------- | ----------------- |
 | namespace                        | Kubernetes namespace you plan to deploy on             | vrtuoso           |
 | image.tag                        | Tag version for docker images provided by vrtuoso           | release-v1        |
-| listen.host                      | Listening on a specific network host                        | 0.0.0.0           |
-| listen.port                      | Listening on a specific network port                        | 3000              |
 | tls.enabled                      | Enable SSL to run over HTTPS                                | false             |
-| tls.secretName                   | Name to set for the secret for SSL                               |             |
-| tls.secretCrt                    | Base64 encoded string for your SSL Crt                              |             |
-| tls.secretKey                    | Base64 encoded string for your SSL Key (pem key that includes your chain |                                                    | null              |
-| ingress.provider                 | Your ingress provider type based on Cloud provider (rancher-v1|digitalocean|gke|eks)                                | digitalocean              |
-| shared.env.HOST_URL             | The URL you will be accessing the vrtuoso platform including the scheme (http|https)                             |   https://portal.vrtuoso.io            |
-| shared.env.JWT_SECRET_KEY        | Random generated key for JWT token encryption shared amongst all services   | secret |
-| database.type                    | Backend database type                                       | h2                |
-| database.encryptionKey           | Secret key for encrypt sensitive information into database  | null              |
-| database.connectionURI           | Database connection URI (alternative to the below settings) | null              |
+| tls.secretName                   | Name to set for the secret for SSL, update when `tls.enabled: true`                               |             |
+| tls.secretCrt                    | Base64 encoded string for your SSL Crt, update when `tls.enabled: true`                             |             |
+| tls.secretKey                    | Base64 encoded string for your SSL Key (pem key that includes your chain, update when `tls.enabled: true` |                                                    | null              |
+| ingress.provider                 | Your ingress provider type based on Cloud provider `(rancher-v1|digitalocean|gke|eks)` only `rancher-v1` and `digitalocean` are implemented but you can use `ingress.annotations` to customize it to your cloud provider's ingress specification                            | digitalocean              |
+| ingress.installNginxIngress                | Optional installation of nginx ingress, recommended and tested on digitalocean if you do not have an existing ingress controller set up for your cluster   | false              |
+| ingress.nginx | Is Nginx the Ingress Controller, nginx is a popular nginx controller for many cloud providers, we added nginx specific ingress annotations for nginx. When set to `true`, they will be added. You can also add your custom annotations by updating `ingress.annotations` | true |
+| ingress.annotations | Custom annotations to add to the ingress, this is useful for many cloud provider (ie. AWS EKS, Google GKE, etc) specific ingress annotations | {} |
+| shared.env.HOST_URL             | The URL you will be accessing the vrtuoso platform including the scheme `(http|https)`                             |   https://portal.vrtuoso.io            |
+| shared.env.JWT\_SECRET\_KEY | Random generated key for JWT token encryption shared amongst all services   | secret |
 | mysql.host                       | Database host url                                              | null              |
 | mysql.username                | Database username                                           | null              |
 | mysql.password                | Database password                                           | null              |
@@ -172,9 +170,14 @@ kubectl apply -f generated/vrtuoso/templates/svcs;
 kubectl apply -f generated/vrtuoso/templates/ingress/ingress.yaml;
 ```
 
+if you used the nginx ingress controller we provided `ingress.installNginxIngress: true` (tested and recommended for DigitalOcean), include the following
+
+```
+kubectl apply -f generated/vrtuoso/templates/cluster-setup/mandatory.yaml;
+kubectl apply -f generated/vrtuoso/templates/cluster-setup/cloud-generic.yaml;
+kubectl apply -f generated/vrtuoso/templates/cluster-setup/do_nginx-ingress-controller.yaml;
+```
+
 ### 9. Visit Deployed VRtuoso
 Your VRtuoso instance comes default with no ssl configuration. Go to:
 
-```
-yourip:80
-```
