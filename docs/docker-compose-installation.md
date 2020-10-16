@@ -11,6 +11,10 @@
 * S3 (S3 or S3 compatible storage is required and for detail, please check the S3 configuration section)
 * SMTP (required for email sending and 2 Factor Authentication)
 
+Notes:
+
+* All external loadbalancer/ingress are required to use TLS1.2 is SSL mode is enabled
+
 #### Hardware Requirements
 We recommend running the platform on a clean instance with the following specs
 
