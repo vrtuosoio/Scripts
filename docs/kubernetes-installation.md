@@ -10,7 +10,7 @@
 * SMTP (required for email sending and 2 Factor Authentication)
 
 Notes: 
-* All external loadbalancer/ingress are required to use TLS1.2 is SSL mode is enabled
+* All external loadbalancer/ingress are required to use TLS1.2 if SSL mode is enabled
 
 #### Tools for Deployment
 
