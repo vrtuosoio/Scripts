@@ -9,6 +9,9 @@
 * S3 (S3 or S3 compatible storage is required and for detail, please check the S3 configuration section)
 * SMTP (required for email sending and 2 Factor Authentication)
 
+Notes: 
+* All external loadbalancer/ingress are required to use TLS1.2 is SSL mode is enabled
+
 #### Tools for Deployment
 
 On the deployment machine that has access to the kubernetes cluster, the following are required to deploy our kubernetes configurations onto the cluster
