@@ -13,7 +13,7 @@
 
 Notes:
 
-* All external loadbalancer/ingress are required to use TLS1.2 is SSL mode is enabled
+* All external loadbalancer/ingress are required to use TLS1.2 if SSL mode is enabled
 
 #### Hardware Requirements
 We recommend running the platform on a clean instance with the following specs
