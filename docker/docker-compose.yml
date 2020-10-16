@@ -42,7 +42,8 @@ services:
       SMTP_USERNAME: postmaster@mg.vrtuoso.io
       SMTP_PASSWORD: smtppassword
       ENV: prod
-      INSTANCE_MODE: onprem
+      INSTANCE_MODE: ONPREM
+      FROM_EMAIL: "support+onprem@vrtuoso.io"
     links:
       - redis
       - mysql
@@ -72,6 +73,8 @@ services:
       SMTP_USERNAME: postmaster@mg.vrtuoso.io
       SMTP_PASSWORD: smtppassword
       ENV: prod
+      INSTANCE_MODE: ONPREM
+      FROM_EMAIL: "support+onprem@vrtuoso.io"
     links:
       - redis
       - mysql
