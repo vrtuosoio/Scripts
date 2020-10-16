@@ -94,7 +94,7 @@ SMTP_USERNAME: postmaster@mg.vrtuoso.io
 SMTP_PASSWORD: smtppassword
 ```
 
-Use custom sent from email, update the following environment variable in every service
+To use custom `sent from` email for all notification emails, update the following environment variable in every service
 
 ```
 FROM_EMAIL: "support+onprem@vrtuoso.io"
