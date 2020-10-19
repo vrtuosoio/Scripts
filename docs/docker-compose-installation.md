@@ -130,3 +130,9 @@ Your VRtuoso instance comes default with no ssl configuration. Go to:
 ```
 yourip:80
 ```
+
+### 10. Update VRtuso Platform using `Simple Update`
+
+Assuming you are updating to a version that is compatible with your current version of VRtuoso Platform, you can repeat `Step 7-10` using a new `VRT_VERSION`.
+
+Note: Certain major updates with major Database schema changes will potentially be incompatible with older versions. Please consult with VRtuoso Support for confirmation on whether your current version supports `Simple Update` method.
