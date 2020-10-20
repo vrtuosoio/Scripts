@@ -163,9 +163,11 @@ services:
       dockerfile: Dockerfile.ssl
 ```
 
-You will then need to configure your DNS to point your domain associated with your SSL certificate to the ip of the machine you are running VRtuoso on and visit.
+You will then need to configure your DNS to point your domain associated with your SSL certificate to the ip of the machine you are running VRtuoso on.
 
 Notes: you will likely get a ssl cert verify error if you access via the IP but that would mean the certificate is being used.
+
+Visit:
 
 ```
 https://yourdomain.com
