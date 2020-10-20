@@ -136,3 +136,37 @@ yourip:80
 Assuming you are updating to a version that is compatible with your current version of VRtuoso Platform, you can repeat `Step 7-10` using a new `VRT_VERSION`.
 
 Note: Certain major updates with major Database schema changes will potentially be incompatible with older versions. Please consult with VRtuoso Support for confirmation on whether your current version supports `Simple Update` method.
+
+
+### Configure SSL (optional)
+
+If you use our nginx-proxy in `docker/nginx-proxy`. You can configure nginx to use SSL. Assuming you are inside the the root directory of this repo
+
+```
+cd docker/nginx-proxy
+```
+
+Update `ssl/ssl.key` with your SSL key and `ssl/ssl.pem` with your pem key (most pem key contains both the certificate and chained certificate). For more information on how https works within nginx, refer to the official nginx doc [here](http://nginx.org/en/docs/http/configuring_https_servers.html)
+
+```
+cp path/to/my/ssl.key ssl/ssl.key
+cp path/to/my/ssl.pem ssl/ssl.pem
+```
+
+Now, update your `docker-compose.yml` file and change the `Dockerfile` reference for `nginx-proxy` to `Dockerfile.ssl` so the `nginx-proxy` block looks like the following
+
+```
+services:
+  nginx-proxy:
+    build:
+      context:  ./nginx-proxy
+      dockerfile: Dockerfile.ssl
+```
+
+You will then need to configure your DNS to point your domain associated with your SSL certificate to the ip of the machine you are running VRtuoso on and visit.
+
+Notes: you will likely get a ssl cert verify error if you access via the IP but that would mean the certificate is being used.
+
+```
+https://yourdomain.com
+```
