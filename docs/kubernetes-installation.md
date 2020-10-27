@@ -17,7 +17,7 @@ Notes:
 On the deployment machine that has access to the kubernetes cluster, the following are required to deploy our kubernetes configurations onto the cluster
 
 * kubectl (ver. 1.15+ tested or latest kubectl compatible with your kubernetes cluster, check [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for latest instructions)
-* helm (ver. v2.14+ tested or latest helm version found [here](https://helm.sh/docs/intro/install/) 
+* helm (ver. v2.14+ tested or latest helm version found [here](https://helm.sh/docs/intro/install/))
 * docker (optional, but if case you prefer to not install kubectl or helm onto your deployment machine, you can use our prepared docker-based installer for kubernetes)
 
 #### Hardware Requirements
@@ -154,19 +154,64 @@ registry:
 
 Use `helm` to generate `kubernetes` deployment files
 
+Assume you are inside `kubernetes` directory of the `Scripts` repo
+
+`export VRT_VERSION=${IMAGE_VER}` allows you to specify what version of the vrtuoso platform you want to run. All of our services are tagged by first 9 characters of `COMMIT HASH` such as `942cfc545`
+
+Use our generate script by using
+
+```
+chmod 755 generate_k8.sh
+VRT_VERSION=$VERSION ./generate_k8.sh
+```
+
+For example:
+
+```
+chmod 755 generate_k8.sh
+VRT_VERSION=942cfc545 ./generate_k8.sh
+```
+
+or run helm manually:
+
 ```
 rm -rf generated
 mkdir -p generated
+
 helm template \
   --values ./deploy-values.yaml \
+  --set image.tag=$VERSION \
   --output-dir ./generated \
     ./charts/vrtuoso
+```
+
+Replace `$VERSION` with the commit hash. 
+For example: 
+
+```
+rm -rf generated
+mkdir -p generated
+
+helm template \
+  --values ./deploy-values.yaml \
+  --set image.tag=942cfc545 \
+  --output-dir ./generated \
+    ./charts/vrtuoso
+```
+
+Make sure your `kubectl` has access to the same kubernetes namespace you intend to install the vrtuoso platform. Allow kubectl to access to use your k8 config file
+
+For example:
+
+```
+export KUBECONFIG=/mypath/config.yaml
 ```
 
 Use `kubectl` to deploy generated config files
 
 ```
-kubectl apply -f generated/vrtuoso/templates/migrations;
+kubectl apply -f generated/vrtuoso/templates/migrations/api-service-migration.yaml;
+kubectl apply -f generated/vrtuoso/templates/migrations/api-service-seed.yaml;
 kubectl apply -f generated/vrtuoso/templates/secrets;
 kubectl apply -f generated/vrtuoso/templates/deployments;
 kubectl apply -f generated/vrtuoso/templates/svcs;
