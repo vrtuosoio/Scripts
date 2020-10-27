@@ -1,4 +1,3 @@
-export KUBECONFIG=${pwd}/config/config.yaml
 kubectl get nodes
 
 kubectl apply -f generated/vrtuoso/templates/cluster-setup/mandatory.yaml;
