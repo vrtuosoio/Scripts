@@ -137,7 +137,29 @@ SMTP_PORT: 587
 SMTP_USERNAME: postmaster@mg.vrtuoso.io
 SMTP_PASSWORD: smtppassword
 ```
-### 7. Request Kubernetes Docker Registry pull secret from VRtuoso Support (required)
+
+### 7. SSL setup (optional)
+
+To enable SSL, please make sure to update the following values in `deploy-values.yaml` created in Step 1.
+
+Update the following values under `tls` and change it to
+
+```
+tls: 
+  enabled: true
+  secretName: 'mydomain'
+  secretCrt: 'base64_str_of_crt'
+  secretKey: 'base64_str_of_key'
+```
+
+You can generate `base64` string of any file by running
+
+```
+cat example.com.pem  | base64
+cat example.com.key  | base64
+```
+
+### 8. Request Kubernetes Docker Registry pull secret from VRtuoso Support (required)
 
 Your docker registry secret to download compiled docker container images will come in the follow format
 
@@ -150,7 +172,7 @@ registry:
   dockerConfigJson: ewogICJhdXRocyI6IHsKICAgICJxdWF5LmlvIjogewogICAgICAiYXV0aCI6ICJkbkowZFc5emJ5dGtaWEJzYjNrNk1qTkdPVXhGVVRVelVsbFlSVFJXV2xWRVRsSlRURFpZUXpWQk9FWldRVnBOVlRkRE4wa3dNMEU1VUU5UlF6
 ```
 
-### 8. Run Deployment Script 
+### 9. Run Deployment Script 
 
 Use `helm` to generate `kubernetes` deployment files
 
@@ -199,7 +221,7 @@ helm template \
     ./charts/vrtuoso
 ```
 
-Make sure your `kubectl` has access to the same kubernetes namespace you intend to install the vrtuoso platform. Allow kubectl to access to use your k8 config file
+Make sure your `kubectl` has access to the same kubernetes namespace you intend to install the vrtuoso platform. Allow kubectl to access and use your k8 config file
 
 For example:
 
@@ -226,6 +248,17 @@ kubectl apply -f generated/vrtuoso/templates/cluster-setup/cloud-generic.yaml;
 kubectl apply -f generated/vrtuoso/templates/cluster-setup/do_nginx-ingress-controller.yaml;
 ```
 
-### 9. Visit Deployed VRtuoso
-Your VRtuoso instance comes default with no ssl configuration. Go to:
+We have also provided a script to install that you can run
 
+```
+chmod 755	deploy_k8.sh
+./deploy_k8.sh
+```
+ 
+### 10. Visit Deployed VRtuoso
+
+Find and vist your kubernetes ip for your cluster using command
+
+```
+kubectl get ingress
+```
