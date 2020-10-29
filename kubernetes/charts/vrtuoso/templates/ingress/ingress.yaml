@@ -26,9 +26,9 @@ metadata:
     {{- if ne .Values.tls.enabled true }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     {{- end }}
-    {{- range $key, $value := .Values.ingress.annotations }}
-      {{ $key }}: {{ $value | quote }}
-    {{- end }}
+  {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
 spec:
   {{- if eq .Values.tls.enabled true }}
   tls:
