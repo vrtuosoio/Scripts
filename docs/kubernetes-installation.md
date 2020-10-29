@@ -64,7 +64,7 @@ The following table lists the configurable parameters of the vrtuoso chart and t
 | ingress.installNginxIngress                | Optional installation of nginx ingress, recommended and tested on digitalocean if you do not have an existing ingress controller set up for your cluster   | false              |
 | ingress.nginx | Is Nginx the Ingress Controller, nginx is a popular nginx controller for many cloud providers, we added nginx specific ingress annotations for nginx. When set to `true`, they will be added. You can also add your custom annotations by updating `ingress.annotations` | true |
 | ingress.annotations | Custom annotations to add to the ingress, this is useful for many cloud provider (ie. AWS EKS, Google GKE, etc) specific ingress annotations | {} |
-| shared.env.HOST_URL             | The URL you will be accessing the vrtuoso platform including the scheme `(http|https)`                             |   https://portal.vrtuoso.io            |
+| shared.env.HOST_URL             | The URL you will be accessing the vrtuoso platform including the scheme `(http\|https)`                             |   https://portal.vrtuoso.io            |
 | shared.env.JWT\_SECRET\_KEY | Random generated key for JWT token encryption shared amongst all services   | secret |
 | mysql.host                       | Database host url                                              | null              |
 | mysql.username                | Database username                                           | null              |
