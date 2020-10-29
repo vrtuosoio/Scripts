@@ -77,7 +77,7 @@ The following table lists the configurable parameters of the vrtuoso chart and t
 | redis.env.REDIS_PASSWORD                | Redis password to set when installing redis incluster                                           | vrtuoso              |
 
 
-### 3. MySQL setup (required)
+### 2. MySQL setup (required)
 
 #### Update DB Password
 `deploy-values.yml` , your must update the following values to use your external MySQL connection string. Refer to the Configuration table reference in Step 1 for what each of field means.
@@ -91,11 +91,12 @@ mysql:
   ssl: disable
 ```
 
-### 4. Redis setup (optional)
+### 3. Redis setup (required)
 #### Update Redis Password
 Our chart comes with redis. The password defaults to `vrtuoso`, feel free to update the value if you want to choose another password. You must enable it by setting `redis.incluster: true`
 
 For example:
+
 ```
 redis:
   image: {}
@@ -103,6 +104,7 @@ redis:
   env:
     REDIS_PASSWORD: vrtuoso
 ```
+
 Feel free to also update the `REDIS_PASSWORD` to anything you prefer, this is for internal access by the socketserver and never exposed to the public
 
 Optionally, you can remove the `redis` block if you are running an external Redis server, in this case, you need to update `REDIS_URL` value in `socketserver.env` with the your external `REDIS_URL` and set `redis.incluster: false`
@@ -113,11 +115,14 @@ Optionally, you can remove the `redis` block if you are running an external Redi
 redis://v:password@redis:6379
 ```
 
-### 5. S3 setup (required)
+Note: redis is REQUIRED for vrtuoso platform to run 
+
+### 4. S3 setup (required)
 
 We use S3 for file object storage, any S3 API compatible services will be compatible with our API. Our API also proxies all operations with the S3 API. If you use an S3 compatible service such as AWS S3, DigitalOcean Space, Minio, Ceph, make sure to update the following values
 
 Update the following values under `api.env`
+
 ```
 S3_ACCESS_KEY_ID: s3accesskeyid
 S3_SECRET_ACCESS_KEY: s3secret
@@ -126,11 +131,12 @@ S3_ENDPOINT: https://s3.us-east-1.amazonaws.com
 S3_REGION: us-east-1
 ```
 
-### 6. SMTP setup (required)
+### 5. SMTP setup (required)
 
 We use a generic SMTP setup, please make sure to update the following values in `deploy-values.yaml` created in Step 1.
 
 Update the following values under `api.env`
+
 ```
 SMTP_HOST: smtp.mailgun.org
 SMTP_PORT: 587
@@ -138,7 +144,7 @@ SMTP_USERNAME: postmaster@mg.vrtuoso.io
 SMTP_PASSWORD: smtppassword
 ```
 
-### 7. SSL setup (optional)
+### 6. SSL setup (optional)
 
 To enable SSL, please make sure to update the following values in `deploy-values.yaml` created in Step 1.
 
@@ -159,7 +165,7 @@ cat example.com.pem  | base64
 cat example.com.key  | base64
 ```
 
-### 8. Request Kubernetes Docker Registry pull secret from VRtuoso Support (required)
+### 7. Request Kubernetes Docker Registry pull secret from VRtuoso Support (required)
 
 Your docker registry secret to download compiled docker container images will come in the follow format
 
@@ -172,7 +178,7 @@ registry:
   dockerConfigJson: ewogICJhdXRocyI6IHsKICAgICJxdWF5LmlvIjogewogICAgICAiYXV0aCI6ICJkbkowZFc5emJ5dGtaWEJzYjNrNk1qTkdPVXhGVVRVelVsbFlSVFJXV2xWRVRsSlRURFpZUXpWQk9FWldRVnBOVlRkRE4wa3dNMEU1VUU5UlF6
 ```
 
-### 9. Run Deployment Script 
+### 8. Run Deployment Script 
 
 Use `helm` to generate `kubernetes` deployment files
 
@@ -180,7 +186,7 @@ Assume you are inside `kubernetes` directory of the `Scripts` repo
 
 `export VRT_VERSION=${IMAGE_VER}` allows you to specify what version of the vrtuoso platform you want to run. All of our services are tagged by first 9 characters of `COMMIT HASH` such as `5534d19fc`
 
-Use our generate script by using
+Use our generate script by running:
 
 ```
 chmod 755 generate_k8.sh
@@ -251,11 +257,11 @@ kubectl apply -f generated/vrtuoso/templates/cluster-setup/do_nginx-ingress-cont
 We have also provided a script to install that you can run
 
 ```
-chmod 755	deploy_k8.sh
+chmod 755 deploy_k8.sh
 ./deploy_k8.sh
 ```
  
-### 10. Visit Deployed VRtuoso
+### 9. Visit Deployed VRtuoso
 
 Find and vist your kubernetes ip for your cluster using command
 
