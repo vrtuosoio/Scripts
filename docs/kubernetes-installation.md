@@ -47,7 +47,7 @@ Copy the values file from helm chart into the your current `kubernetes` director
 cp charts/vrtuoso/values.yaml deploy-values.yaml
 ```
 
-Update `deploy-values.yaml` that you just copied with your values. The template `values.yaml` file is available [here](https://github.com/vrtuosoio/Scripts/blob/master/kuberentes/charts/vrtuoso/values.yaml) for preview.
+Update `deploy-values.yaml` that you just copied with your values. The template `values.yaml` file is available [here](https://github.com/vrtuosoio/Scripts/blob/master/kubernetes/charts/vrtuoso/values.yaml) for preview.
 
 
 The following table lists the configurable parameters of the vrtuoso chart and their default values.
