@@ -7,7 +7,7 @@
 * docker
 * docker-compose
 * redis (tested up to redis 4.x, covered by this installation guide and docker-compose template but can be updated to use externally available set up)
-* mysql 5.6 (covered by this installation guide and docker-compose template but can be updated to use externally available set up)
+* mysql 8 (covered by this installation guide and docker-compose template but can be updated to use externally available set up)
 * S3 (S3 or S3 compatible storage is required and for detail, please check the S3 configuration section)
 * SMTP (required for email sending and 2 Factor Authentication)
 
@@ -18,9 +18,9 @@ Notes:
 #### Hardware Requirements
 We recommend running the platform on a clean instance with the following specs
 
-* 4GB RAM
-* 2CPU
-* 100GB Storage
+* 16GB RAM
+* 4CPU
+* 256GB Storage
 * port 80 and 443 must be available
 
 ### 1. Download and Install Docker and docker-compose (required)
